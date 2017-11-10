@@ -2,26 +2,32 @@ package errors
 
 import "runtime"
 
+// Error represents a constant error string
 type Error string
 
+// Error returns the error string
 func (e Error) Error() string {
 	return string(e)
 }
 
+// Call represents where a particular error was created
 type Call struct {
 	File, Function string
 	LineNum        int
 }
 
+// String returns a human-friendly representation of the call site
 func (c Call) String() string {
 	return c.File + ": (" + string(itobs(c.LineNum)) + ")" + c.Function
 }
 
+// Trace represents the call stack for an error
 type Trace struct {
 	error
 	Traces []Call
 }
 
+// AddTrace wraps an error with a call stack
 func AddTrace(e error) error {
 	var trace [100]uintptr
 	num := runtime.Callers(2, trace[:])
@@ -41,6 +47,7 @@ func AddTrace(e error) error {
 	}
 }
 
+// Trace returns a byte slice containing a description of the call stack
 func (t Trace) Trace() []byte {
 	var buf []byte
 	for _, c := range t.Traces {
@@ -54,10 +61,12 @@ func (t Trace) Trace() []byte {
 	return buf
 }
 
+// Underlyer is used to get the underlying error for a wrapped error
 type Underlyer interface {
 	Underlying() error
 }
 
+// Underlying returns the underlying error
 func (t Trace) Underlying() error {
 	if u, ok := t.error.(Underlyer); ok {
 		return u.Underlying()
