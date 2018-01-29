@@ -2,7 +2,7 @@
 --
     import "github.com/MJKWoolnough/errors"
 
-Errors is a simple package with a few error related types
+Package errors is a simple package with a few error related types
 
 ## Usage
 
