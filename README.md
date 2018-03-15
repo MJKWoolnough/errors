@@ -13,6 +13,12 @@ func AddTrace(e error) error
 ```
 AddTrace wraps an error with a call stack
 
+#### func  WithContext
+
+```go
+func WithContext(context string, err error) error
+```
+
 #### type Call
 
 ```go
