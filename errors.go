@@ -96,3 +96,23 @@ func itobs(i int) []byte {
 	}
 	return b[pos:]
 }
+
+type contextual struct {
+	context string
+	error
+}
+
+func WithContext(err error, context string) error {
+	return &contextual{
+		context: context,
+		error:   err,
+	}
+}
+
+func (c *contextual) Error() string {
+	return c.context + c.error.Error()
+}
+
+func (c *contextual) Underlying() error {
+	return c.error
+}
