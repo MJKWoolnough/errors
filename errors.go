@@ -102,7 +102,7 @@ type contextual struct {
 	error
 }
 
-func WithContext(err error, context string) error {
+func WithContext(context string, err error) error {
 	return &contextual{
 		context: context,
 		error:   err,
