@@ -103,6 +103,9 @@ type contextual struct {
 }
 
 func WithContext(context string, err error) error {
+	if err == nil {
+		return nil
+	}
 	return &contextual{
 		context: context,
 		error:   err,
