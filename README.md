@@ -18,6 +18,11 @@ AddTrace wraps an error with a call stack
 ```go
 func WithContext(context string, err error) error
 ```
+WithContext wraps an error, adding textural context to the error message.
+
+The underlying error can be accessed via the Underlying method.
+
+A nil error will not be wrapped
 
 #### type Call
 

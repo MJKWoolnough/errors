@@ -102,6 +102,11 @@ type contextual struct {
 	error
 }
 
+// WithContext wraps an error, adding textural context to the error message.
+//
+// The underlying error can be accessed via the Underlying method.
+//
+// A nil error will not be wrapped
 func WithContext(context string, err error) error {
 	if err == nil {
 		return nil
