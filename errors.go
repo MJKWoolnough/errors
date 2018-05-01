@@ -67,6 +67,21 @@ type Underlyer interface {
 	Underlying() error
 }
 
+// Underlying repeatedly called checks for an underlying error to returned the
+// original wrapped error.
+func Underlying(err error) error {
+	for {
+		if err == nil {
+			return err
+		}
+		u, ok := err.(Underlyer)
+		if !ok {
+			return err
+		}
+		err = u.Underlying()
+	}
+}
+
 // Underlying returns the underlying error
 func (t Trace) Underlying() error {
 	if u, ok := t.error.(Underlyer); ok {

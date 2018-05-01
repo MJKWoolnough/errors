@@ -13,6 +13,14 @@ func AddTrace(e error) error
 ```
 AddTrace wraps an error with a call stack
 
+#### func  Underlying
+
+```go
+func Underlying(err error) error
+```
+Underlying repeatedly called checks for an underlying error to returned the
+original wrapped error.
+
 #### func  WithContext
 
 ```go
