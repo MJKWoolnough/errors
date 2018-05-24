@@ -13,6 +13,13 @@ func AddTrace(e error) error
 ```
 AddTrace wraps an error with a call stack
 
+#### func  New
+
+```go
+func New(str string) error
+```
+New returns an error that returns the given string
+
 #### func  Underlying
 
 ```go

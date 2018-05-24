@@ -6,6 +6,11 @@ import "runtime"
 // Error represents a constant error string
 type Error string
 
+// New returns an error that returns the given string
+func New(str string) error {
+	return Error(str)
+}
+
 // Error returns the error string
 func (e Error) Error() string {
 	return string(e)
