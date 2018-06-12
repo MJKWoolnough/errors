@@ -1,5 +1,5 @@
 // Package errors is a simple package with a few error related types
-package errors
+package errors // import "vimagination.zapto.org/errors"
 
 import "runtime"
 
