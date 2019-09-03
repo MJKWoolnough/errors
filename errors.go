@@ -67,30 +67,30 @@ func (t Trace) Trace() []byte {
 	return buf
 }
 
-// Underlyer is used to get the underlying error for a wrapped error
-type Underlyer interface {
-	Underlying() error
+// Wrapper is used to get the underlying error for a wrapped error
+type Wrapper interface {
+	Unwrap() error
 }
 
-// Underlying repeatedly called checks for an underlying error to returned the
+// Unwrap repeatedly called checks for an underlying error to returned the
 // original wrapped error.
-func Underlying(err error) error {
+func Unwrap(err error) error {
 	for {
 		if err == nil {
 			return err
 		}
-		u, ok := err.(Underlyer)
+		u, ok := err.(Wrapper)
 		if !ok {
 			return err
 		}
-		err = u.Underlying()
+		err = u.Unwrap()
 	}
 }
 
-// Underlying returns the underlying error
-func (t Trace) Underlying() error {
-	if u, ok := t.error.(Underlyer); ok {
-		return u.Underlying()
+// Unwrap returns the underlying error
+func (t Trace) Unwrap() error {
+	if u, ok := t.error.(Wrapper); ok {
+		return u.Unwrap()
 	}
 	return t.error
 }
@@ -124,7 +124,7 @@ type contextual struct {
 
 // WithContext wraps an error, adding textural context to the error message.
 //
-// The underlying error can be accessed via the Underlying method.
+// The wrapped error can be accessed via the Unwrap method.
 //
 // A nil error will not be wrapped
 func WithContext(context string, err error) error {
@@ -141,6 +141,6 @@ func (c *contextual) Error() string {
 	return c.context + c.error.Error()
 }
 
-func (c *contextual) Underlying() error {
+func (c *contextual) Unwrap() error {
 	return c.error
 }
