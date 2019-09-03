@@ -27,7 +27,7 @@ func TestErrors(t *testing.T) {
 	if err.Error() != "B" {
 		t.Errorf("expecting error string \"B\" got %q", err.Error())
 	}
-	if c := WithContext("CONTEXT", A); Underlying(c) != A {
+	if c := WithContext("CONTEXT", A); Unwrap(c) != A {
 		t.Errorf("expecting error %q, got %q", A, c)
 	}
 }
