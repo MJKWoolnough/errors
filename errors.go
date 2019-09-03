@@ -92,7 +92,7 @@ func (t Trace) Unwrap() error {
 	if u, ok := t.error.(Wrapper); ok {
 		return u.Unwrap()
 	}
-	return t.error
+	return nil
 }
 
 func itobs(i int) []byte {
