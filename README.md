@@ -1,6 +1,6 @@
 # errors
 --
-    import "github.com/MJKWoolnough/errors"
+    import "vimagination.zapto.org/errors"
 
 Package errors is a simple package with a few error related types
 
@@ -20,13 +20,13 @@ func New(str string) error
 ```
 New returns an error that returns the given string
 
-#### func  Underlying
+#### func  Unwrap
 
 ```go
-func Underlying(err error) error
+func Unwrap(err error) error
 ```
-Underlying repeatedly called checks for an underlying error to returned the
-original wrapped error.
+Unwrap repeatedly called checks for an underlying error to returned the original
+wrapped error.
 
 #### func  WithContext
 
@@ -35,7 +35,7 @@ func WithContext(context string, err error) error
 ```
 WithContext wraps an error, adding textural context to the error message.
 
-The underlying error can be accessed via the Underlying method.
+The wrapped error can be accessed via the Unwrap method.
 
 A nil error will not be wrapped
 
@@ -89,19 +89,19 @@ func (t Trace) Trace() []byte
 ```
 Trace returns a byte slice containing a description of the call stack
 
-#### func (Trace) Underlying
+#### func (Trace) Unwrap
 
 ```go
-func (t Trace) Underlying() error
+func (t Trace) Unwrap() error
 ```
-Underlying returns the underlying error
+Unwrap returns the underlying error
 
-#### type Underlyer
+#### type Wrapper
 
 ```go
-type Underlyer interface {
-	Underlying() error
+type Wrapper interface {
+	Unwrap() error
 }
 ```
 
-Underlyer is used to get the underlying error for a wrapped error
+Wrapper is used to get the underlying error for a wrapped error
