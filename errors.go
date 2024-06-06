@@ -1,43 +1,45 @@
-// Package errors is a simple package with a few error related types
+// Package errors is a simple package with a few error related types.
 package errors // import "vimagination.zapto.org/errors"
 
 import "runtime"
 
-// Error represents a constant error string
+// Error represents a constant error string.
 type Error string
 
-// New returns an error that returns the given string
+// New returns an error that returns the given string.
 func New(str string) error {
 	return Error(str)
 }
 
-// Error returns the error string
+// Error returns the error string.
 func (e Error) Error() string {
 	return string(e)
 }
 
-// Call represents where a particular error was created
+// Call represents where a particular error was created.
 type Call struct {
 	File, Function string
 	LineNum        int
 }
 
-// String returns a human-friendly representation of the call site
+// String returns a human-friendly representation of the call site.
 func (c Call) String() string {
 	return c.File + ": (" + string(itobs(c.LineNum)) + ")" + c.Function
 }
 
-// Trace represents the call stack for an error
+// Trace represents the call stack for an error.
 type Trace struct {
 	error
 	Traces []Call
 }
 
-// AddTrace wraps an error with a call stack
+// AddTrace wraps an error with a call stack.
 func AddTrace(e error) error {
 	var trace [100]uintptr
+
 	num := runtime.Callers(2, trace[:])
 	traces := make([]Call, num)
+
 	for i := 0; i < num; i++ {
 		f := runtime.FuncForPC(trace[i])
 		file, ln := f.FileLine(trace[i])
@@ -47,15 +49,17 @@ func AddTrace(e error) error {
 			LineNum:  ln,
 		}
 	}
+
 	return &Trace{
 		error:  e,
 		Traces: traces,
 	}
 }
 
-// Trace returns a byte slice containing a description of the call stack
+// Trace returns a byte slice containing a description of the call stack.
 func (t Trace) Trace() []byte {
 	var buf []byte
+
 	for _, c := range t.Traces {
 		buf = append(buf, c.File...)
 		buf = append(buf, ':', ' ', '(')
@@ -64,10 +68,11 @@ func (t Trace) Trace() []byte {
 		buf = append(buf, c.Function...)
 		buf = append(buf, '\n')
 	}
+
 	return buf
 }
 
-// Wrapper is used to get the underlying error for a wrapped error
+// Wrapper is used to get the underlying error for a wrapped error.
 type Wrapper interface {
 	Unwrap() error
 }
@@ -77,21 +82,24 @@ type Wrapper interface {
 func Unwrap(err error) error {
 	for {
 		if err == nil {
-			return err
+			return nil
 		}
+
 		u, ok := err.(Wrapper)
 		if !ok {
 			return err
 		}
+
 		err = u.Unwrap()
 	}
 }
 
-// Unwrap returns the underlying error
+// Unwrap returns the underlying error.
 func (t Trace) Unwrap() error {
 	if u, ok := t.error.(Wrapper); ok {
 		return u.Unwrap()
 	}
+
 	return nil
 }
 
@@ -99,21 +107,28 @@ func itobs(i int) []byte {
 	if i == 0 {
 		return []byte{'0'}
 	}
-	var neg = false
+
+	neg := false
+
 	if i < 0 {
 		neg = true
 		i = -i
 	}
+
 	pos := 21
+
 	var b [21]byte
+
 	for ; i > 0; i /= 10 {
 		pos--
 		b[pos] = byte(i%10) + '0'
 	}
+
 	if neg {
 		pos--
 		b[pos] = '-'
 	}
+
 	return b[pos:]
 }
 
@@ -126,11 +141,12 @@ type contextual struct {
 //
 // The wrapped error can be accessed via the Unwrap method.
 //
-// A nil error will not be wrapped
+// A nil error will not be wrapped.
 func WithContext(context string, err error) error {
 	if err == nil {
 		return nil
 	}
+
 	return &contextual{
 		context: context,
 		error:   err,
