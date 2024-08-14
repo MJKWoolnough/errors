@@ -2,7 +2,7 @@
 --
     import "vimagination.zapto.org/errors"
 
-Package errors is a simple package with a few error related types
+Package errors is a simple package with a few error related types.
 
 ## Usage
 
@@ -11,14 +11,14 @@ Package errors is a simple package with a few error related types
 ```go
 func AddTrace(e error) error
 ```
-AddTrace wraps an error with a call stack
+AddTrace wraps an error with a call stack.
 
 #### func  New
 
 ```go
 func New(str string) error
 ```
-New returns an error that returns the given string
+New returns an error that returns the given string.
 
 #### func  Unwrap
 
@@ -37,7 +37,7 @@ WithContext wraps an error, adding textural context to the error message.
 
 The wrapped error can be accessed via the Unwrap method.
 
-A nil error will not be wrapped
+A nil error will not be wrapped.
 
 #### type Call
 
@@ -48,14 +48,14 @@ type Call struct {
 }
 ```
 
-Call represents where a particular error was created
+Call represents where a particular error was created.
 
 #### func (Call) String
 
 ```go
 func (c Call) String() string
 ```
-String returns a human-friendly representation of the call site
+String returns a human-friendly representation of the call site.
 
 #### type Error
 
@@ -63,14 +63,14 @@ String returns a human-friendly representation of the call site
 type Error string
 ```
 
-Error represents a constant error string
+Error represents a constant error string.
 
 #### func (Error) Error
 
 ```go
 func (e Error) Error() string
 ```
-Error returns the error string
+Error returns the error string.
 
 #### type Trace
 
@@ -80,21 +80,21 @@ type Trace struct {
 }
 ```
 
-Trace represents the call stack for an error
+Trace represents the call stack for an error.
 
 #### func (Trace) Trace
 
 ```go
 func (t Trace) Trace() []byte
 ```
-Trace returns a byte slice containing a description of the call stack
+Trace returns a byte slice containing a description of the call stack.
 
 #### func (Trace) Unwrap
 
 ```go
 func (t Trace) Unwrap() error
 ```
-Unwrap returns the underlying error
+Unwrap returns the underlying error.
 
 #### type Wrapper
 
@@ -104,4 +104,4 @@ type Wrapper interface {
 }
 ```
 
-Wrapper is used to get the underlying error for a wrapped error
+Wrapper is used to get the underlying error for a wrapped error.
