@@ -77,8 +77,8 @@ type Wrapper interface {
 	Unwrap() error
 }
 
-// Unwrap repeatedly called checks for an underlying error to returned the
-// original wrapped error.
+// Unwrap repeatedly checks for an underlying error to returned the original
+// wrapped error.
 func Unwrap(err error) error {
 	for {
 		if err == nil {
