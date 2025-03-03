@@ -25,7 +25,7 @@ New returns an error that returns the given string.
 ```go
 func Unwrap(err error) error
 ```
-Unwrap repeatedly called checks for an underlying error to returned the original
+Unwrap repeatedly checks for an underlying error to returned the original
 wrapped error.
 
 #### func  WithContext
