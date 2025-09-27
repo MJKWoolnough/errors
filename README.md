@@ -1,107 +1,50 @@
 # errors
+
+[![CI](https://github.com/MJKWoolnough/errors/actions/workflows/go-checks.yml/badge.svg)](https://github.com/MJKWoolnough/errors/actions)
+[![Go Reference](https://pkg.go.dev/badge/vimagination.zapto.org/errors.svg)](https://pkg.go.dev/vimagination.zapto.org/errors)
+[![Go Report Card](https://goreportcard.com/badge/vimagination.zapto.org/errors)](https://goreportcard.com/report/vimagination.zapto.org/errors)
+
 --
     import "vimagination.zapto.org/errors"
 
 Package errors is a simple package with a few error related types.
 
+## Highlights
+
+ - Allows for const string error values.
+ - Add stack traces to errors.
+ - Add context messages to errors.
+
 ## Usage
 
-#### func  AddTrace
-
 ```go
-func AddTrace(e error) error
-```
-AddTrace wraps an error with a call stack.
+package main
 
-#### func  New
+import (
+	"fmt"
 
-```go
-func New(str string) error
-```
-New returns an error that returns the given string.
+	"vimagination.zapto.org/errors"
+)
 
-#### func  Unwrap
+func main() {
+	const ErrExample errors.Error = "my example error"
 
-```go
-func Unwrap(err error) error
-```
-Unwrap repeatedly checks for an underlying error to returned the original
-wrapped error.
+	err := errors.AddTrace(errors.WithContext("An error: ", ErrExample))
 
-#### func  WithContext
+	fmt.Println(err)
 
-```go
-func WithContext(context string, err error) error
-```
-WithContext wraps an error, adding textural context to the error message.
+	trace := err.(*errors.Trace)
 
-The wrapped error can be accessed via the Unwrap method.
+	fmt.Println(trace.Traces[0].Function)
 
-A nil error will not be wrapped.
-
-#### type Call
-
-```go
-type Call struct {
-	File, Function string
-	LineNum        int
+	// Output:
+	// An error: my example error
+	// main.main
 }
 ```
 
-Call represents where a particular error was created.
+## Documentation
 
-#### func (Call) String
+Full API docs can be found at:
 
-```go
-func (c Call) String() string
-```
-String returns a human-friendly representation of the call site.
-
-#### type Error
-
-```go
-type Error string
-```
-
-Error represents a constant error string.
-
-#### func (Error) Error
-
-```go
-func (e Error) Error() string
-```
-Error returns the error string.
-
-#### type Trace
-
-```go
-type Trace struct {
-	Traces []Call
-}
-```
-
-Trace represents the call stack for an error.
-
-#### func (Trace) Trace
-
-```go
-func (t Trace) Trace() []byte
-```
-Trace returns a byte slice containing a description of the call stack.
-
-#### func (Trace) Unwrap
-
-```go
-func (t Trace) Unwrap() error
-```
-Unwrap returns the underlying error.
-
-#### type Wrapper
-
-```go
-type Wrapper interface {
-	Unwrap() error
-}
-```
-
-Wrapper is used to get the underlying error for a wrapped error.
+https://pkg.go.dev/vimagination.zapto.org/errors
