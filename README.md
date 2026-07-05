@@ -2,7 +2,6 @@
 
 [![CI](https://github.com/MJKWoolnough/errors/actions/workflows/go-checks.yml/badge.svg)](https://github.com/MJKWoolnough/errors/actions)
 [![Go Reference](https://pkg.go.dev/badge/vimagination.zapto.org/errors.svg)](https://pkg.go.dev/vimagination.zapto.org/errors)
-[![Go Report Card](https://goreportcard.com/badge/vimagination.zapto.org/errors)](https://goreportcard.com/report/vimagination.zapto.org/errors)
 
 --
     import "vimagination.zapto.org/errors"
